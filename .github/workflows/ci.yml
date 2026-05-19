@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-check:
+  deploy:
     if: github.repository == 'ERICA-We-Meet-Hyre-Me/Hyre-Me-BE'
     runs-on: ubuntu-latest
 
