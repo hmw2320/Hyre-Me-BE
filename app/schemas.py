@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, constr
-from typing import Optional
-from datetime import datetime
+from typing import Optional, List
+from datetime import datetime, date
 
 class UserCreate(BaseModel):
     name: str
@@ -18,7 +18,6 @@ class UserResponse(BaseModel):
     created_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
         from_attributes = True
 
 class UserUpdate(BaseModel):
@@ -30,3 +29,206 @@ class TokenResponse(BaseModel):
     token_type: str
     user_id: int
     name: str
+
+
+class PortfolioProfileBase(BaseModel):
+    education: Optional[str] = None
+    gpa: Optional[str] = None
+    core_skills_text: Optional[str] = None
+    self_intro_keywords: Optional[str] = None
+
+
+class PortfolioProfileUpsert(PortfolioProfileBase):
+    pass
+
+
+class PortfolioProfileResponse(PortfolioProfileBase):
+    id: int
+    user_id: int
+    resume_file_url: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class PortfolioExperienceBase(BaseModel):
+    category: str
+    title: str
+    organization: Optional[str] = None
+    period_text: Optional[str] = None
+    role: Optional[str] = None
+    tech_stack: Optional[str] = None
+    description: Optional[str] = None
+    achievement: Optional[str] = None
+    learned: Optional[str] = None
+    related_skills: Optional[str] = None
+    sort_order: Optional[int] = 0
+
+
+class PortfolioExperienceCreate(PortfolioExperienceBase):
+    pass
+
+
+class PortfolioExperienceUpdate(BaseModel):
+    category: Optional[str] = None
+    title: Optional[str] = None
+    organization: Optional[str] = None
+    period_text: Optional[str] = None
+    role: Optional[str] = None
+    tech_stack: Optional[str] = None
+    description: Optional[str] = None
+    achievement: Optional[str] = None
+    learned: Optional[str] = None
+    related_skills: Optional[str] = None
+    sort_order: Optional[int] = None
+
+
+class PortfolioExperienceResponse(PortfolioExperienceBase):
+    id: int
+    user_id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class PortfolioCertificationBase(BaseModel):
+    name: str
+    issuer: Optional[str] = None
+    acquired_date: Optional[date] = None
+    description: Optional[str] = None
+
+
+class PortfolioCertificationCreate(PortfolioCertificationBase):
+    pass
+
+
+class PortfolioCertificationUpdate(BaseModel):
+    name: Optional[str] = None
+    issuer: Optional[str] = None
+    acquired_date: Optional[date] = None
+    description: Optional[str] = None
+
+
+class PortfolioCertificationResponse(PortfolioCertificationBase):
+    id: int
+    user_id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class PortfolioLanguageBase(BaseModel):
+    test_name: str
+    score: Optional[str] = None
+    grade: Optional[str] = None
+    acquired_date: Optional[date] = None
+    description: Optional[str] = None
+
+
+class PortfolioLanguageCreate(PortfolioLanguageBase):
+    pass
+
+
+class PortfolioLanguageUpdate(BaseModel):
+    test_name: Optional[str] = None
+    score: Optional[str] = None
+    grade: Optional[str] = None
+    acquired_date: Optional[date] = None
+    description: Optional[str] = None
+
+
+class PortfolioLanguageResponse(PortfolioLanguageBase):
+    id: int
+    user_id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CompanyBase(BaseModel):
+    name: str
+    role: str
+    deadline_text: Optional[str] = None
+    status: Optional[str] = "PREPARING"
+    job_posting_url: Optional[str] = None
+    requirements: Optional[str] = None
+    preferences: Optional[str] = None
+    core_values: Optional[str] = None
+
+
+class CompanyCreate(CompanyBase):
+    pass
+
+
+class CompanyUpdate(BaseModel):
+    name: Optional[str] = None
+    role: Optional[str] = None
+    deadline_text: Optional[str] = None
+    status: Optional[str] = None
+    job_posting_url: Optional[str] = None
+    requirements: Optional[str] = None
+    preferences: Optional[str] = None
+    core_values: Optional[str] = None
+
+
+class CompanyResponse(CompanyBase):
+    id: int
+    user_id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ResumeCompanyOption(BaseModel):
+    id: int
+    name: str
+    role: str
+    status: Optional[str] = None
+    deadline_text: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class GeneratedResumeResponse(BaseModel):
+    id: int
+    user_id: int
+    company_id: int
+    title: str
+    additional_prompt: Optional[str] = None
+    content_markdown: Optional[str] = None
+    status: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class GeneratedResumeStatusResponse(BaseModel):
+    id: int
+    status: Optional[str] = None
+
+
+class PortfolioSaveRequest(BaseModel):
+    profile: PortfolioProfileUpsert
+    experiences: List[PortfolioExperienceCreate]
+    certifications: List[PortfolioCertificationCreate]
+    languages: List[PortfolioLanguageCreate]
+
+
+class PortfolioSaveResponse(BaseModel):
+    profile: PortfolioProfileResponse
+    experiences: List[PortfolioExperienceResponse]
+    certifications: List[PortfolioCertificationResponse]
+    languages: List[PortfolioLanguageResponse]

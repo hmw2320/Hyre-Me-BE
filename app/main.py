@@ -1,18 +1,25 @@
 from datetime import datetime
 import os
+from pathlib import Path
 from fastapi import FastAPI, Depends, HTTPException, status, Header
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 
 from app.database import get_db, engine
 from app import models, schemas, auth
+from app.portfolio import router as portfolio_router, UPLOAD_ROOT
 
 load_dotenv()
 
 # models.Base.metadata.create_all(bind=engine) # 필요시 사용해 테이블을 자동 생성
 
 app = FastAPI(title="hyre-me-BE", version="0.1.0", description="Hyre Me Backend API")
+
+UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(UPLOAD_ROOT)), name="uploads")
+app.include_router(portfolio_router)
 
 # CORS 설정
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
