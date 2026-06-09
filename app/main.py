@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
-from app.database import engine
+from app.database import Base, engine, DB_TYPE
 from app import auth
 from app.portfolio import router as portfolio_router, UPLOAD_ROOT
 
@@ -31,6 +31,12 @@ UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(UPLOAD_ROOT)), name="uploads")
 app.include_router(portfolio_router)
 app.include_router(auth.router)
+
+
+@app.on_event("startup")
+def create_local_sqlite_tables():
+    if DB_TYPE == "sqlite":
+        Base.metadata.create_all(bind=engine)
 
 # CORS 설정
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")

@@ -3,10 +3,12 @@ from sqlalchemy import Column, BigInteger, String, TIMESTAMP, Text, Date, Intege
 from sqlalchemy.sql import func
 from app.database import Base
 
+PRIMARY_KEY_TYPE = BigInteger().with_variant(Integer, "sqlite")
+
 class User(Base):
     __tablename__ = os.getenv("DB_TABLE_USERS", "users")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     email = Column(String(255), unique=True, nullable=False, index=True)
     password = Column(String(255), nullable=False)
@@ -17,9 +19,9 @@ class User(Base):
 class UserRefreshToken(Base):
     __tablename__ = os.getenv("DB_TABLE_USER_REFRESH_TOKENS", "user_refresh_tokens")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
     user_id = Column(
-        BigInteger,
+        PRIMARY_KEY_TYPE,
         ForeignKey(f"{os.getenv('DB_TABLE_USERS', 'users')}.id", ondelete="CASCADE"),
         unique=True,
         nullable=False,
@@ -34,8 +36,8 @@ class UserRefreshToken(Base):
 class PortfolioProfile(Base):
     __tablename__ = os.getenv("DB_TABLE_PORTFOLIO_PROFILES", "portfolio_profiles")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, unique=True, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, unique=True, index=True)
     education = Column(String(255), nullable=True)
     gpa = Column(String(50), nullable=True)
     core_skills_text = Column(Text, nullable=True)
@@ -48,8 +50,8 @@ class PortfolioProfile(Base):
 class PortfolioExperience(Base):
     __tablename__ = os.getenv("DB_TABLE_PORTFOLIO_EXPERIENCES", "portfolio_experiences")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
     category = Column(String(50), nullable=False)
     title = Column(String(255), nullable=False)
     organization = Column(String(255), nullable=True)
@@ -68,8 +70,8 @@ class PortfolioExperience(Base):
 class PortfolioCertification(Base):
     __tablename__ = os.getenv("DB_TABLE_PORTFOLIO_CERTIFICATIONS", "portfolio_certifications")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
     name = Column(String(255), nullable=False)
     issuer = Column(String(255), nullable=True)
     acquired_date = Column(Date, nullable=True)
@@ -81,8 +83,8 @@ class PortfolioCertification(Base):
 class PortfolioLanguage(Base):
     __tablename__ = os.getenv("DB_TABLE_PORTFOLIO_LANGUAGES", "portfolio_languages")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
     test_name = Column(String(100), nullable=False)
     score = Column(String(50), nullable=True)
     grade = Column(String(50), nullable=True)
@@ -95,8 +97,8 @@ class PortfolioLanguage(Base):
 class Company(Base):
     __tablename__ = os.getenv("DB_TABLE_COMPANIES", "companies")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
     name = Column(String(255), nullable=False)
     role = Column(String(255), nullable=False)
     deadline_text = Column(String(100), nullable=True)
@@ -112,9 +114,9 @@ class Company(Base):
 class GeneratedResume(Base):
     __tablename__ = os.getenv("DB_TABLE_GENERATED_RESUMES", "generated_resumes")
 
-    id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(BigInteger, nullable=False, index=True)
-    company_id = Column(BigInteger, nullable=False, index=True)
+    id = Column(PRIMARY_KEY_TYPE, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
+    company_id = Column(PRIMARY_KEY_TYPE, nullable=False, index=True)
     title = Column(String(255), nullable=False)
     additional_prompt = Column(Text, nullable=True)
     content_markdown = Column(Text, nullable=True)
