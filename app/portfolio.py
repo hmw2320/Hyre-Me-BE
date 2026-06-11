@@ -761,9 +761,9 @@ def generate_resume(payload: schemas.GenerateResumeRequest, db: Session = Depend
     # 5. 작성 포인트와 예상 질문을 하단에 마크다운으로 합성
     final_markdown = ai_result.get("content_markdown", "")
     final_markdown += "\n\n---\n"
-    final_markdown += f"### 💡 AI 작성 포인트\n{ai_result.get('reasoning', '')}\n\n"
-    final_markdown += f"### 🎯 강조된 기업 핵심 키워드\n{', '.join(ai_result.get('enhanced_keywords', []))}\n\n"
-    final_markdown += "### 🎤 예상 면접 꼬리질문\n"
+    final_markdown += f"### AI 작성 포인트\n{ai_result.get('reasoning', '')}\n\n"
+    final_markdown += f"### 강조된 기업 핵심 키워드\n{', '.join(ai_result.get('enhanced_keywords', []))}\n\n"
+    final_markdown += "### 예상 면접 꼬리질문\n"
     for idx, question in enumerate(ai_result.get("interview_questions", [])):
         final_markdown += f"{idx + 1}. {question}\n"
     
