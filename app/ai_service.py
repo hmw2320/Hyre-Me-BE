@@ -210,7 +210,8 @@ def generate_masterpiece_resume(
     profile_data: dict, 
     experiences: list, 
     company_data: dict,
-    additional_prompt: str = ""
+    additional_prompt: str = "",
+    language: str = "한국어"
 ) -> dict:
     """
     사용자의 포트폴리오와 목표 기업 정보를 바탕으로 Gemini를 활용하여 맞춤형 자소서를 생성합니다.
@@ -241,12 +242,13 @@ def generate_masterpiece_resume(
     당신은 IT 기업의 전문 취업 컨설턴트입니다.
     제공된 [사용자 스펙 및 경험]과 [타겟 기업 정보]를 바탕으로 실제 제출 가능한 수준의 완성도 높은 자기소개서를 마크다운 형식으로 작성해주세요.
 
-    [작성 원칙]
-    - 본문(content_markdown) 작성 시 중간에 큼직한 제목(#, ##, ### 등의 마크다운 헤더)이나 제목용 문구를 절대 사용하지 말고, 자연스러운 단락 구분과 줄바꿈으로만 내용을 구성하세요.
-    - 모든 항목(자소서 본문, 작성 포인트, 키워드, 면접 질문 등)에서 이모티콘이나 이모지(이모티콘)를 절대 사용하지 마세요.
+    [작성 및 다국어 지원 원칙]
+    - 자소서 본문(content_markdown)과 제목(title)은 반드시 문맥상 오타와 어색함이 없도록 완벽한 '{language}'로 작성하세요.
+    - 하지만 자소서 본문을 제외한 '나머지 모든 항목(reasoning, interview_questions)'은 사용자가 이해할 수 있도록 반드시 '한국어'로 작성해야 합니다.
+    - 본문 작성 시 중간에 큼직한 제목(#, ##, ### 등의 마크다운 헤더)이나 제목용 문구를 절대 사용하지 말고, 자연스러운 단락 구분과 줄바꿈으로만 내용을 구성하세요.
+    - 모든 항목에서 이모티콘(이모지)을 절대 사용하지 마세요.
     - 경험과 성과는 구체적인 수치와 기술적 행동을 포함하여 두괄식으로 서술하세요.
     - STAR(상황, 과제, 행동, 결과) 구조를 반영하여 논리적이고 담백한 어조로 작성하세요.
-    - 상투적인 표현은 배제하고 직무 역량이 명확히 돋보이도록 구성하세요.
 
     [타겟 기업 정보]
     - 기업명: {company_data.get('name', '알 수 없음')}
@@ -264,9 +266,9 @@ def generate_masterpiece_resume(
     [사용자 추가 요청사항]
     {additional_prompt}
 
-    반드시 제공된 JSON 스키마 규격에 맞추어 한국어로 응답해야 합니다.
+    반드시 제공된 JSON 스키마 규격에 맞추어 응답해야 합니다.
     """
-    
+
     try:
         # 3. 구조화된 JSON 출력을 강제하는 설정과 함께 Gemini API 호출
         print(f"[{company_data.get('name', '자소서')}] 지원을 위한 자소서 생성 중...")
@@ -274,7 +276,7 @@ def generate_masterpiece_resume(
             model=GEMINI_MODEL_NAME,
             contents=[prompt],
             config=types.GenerateContentConfig(
-                temperature=0.7,  # 창의적이고 자연스러운 글쓰기를 위해 0.7로 설정
+                temperature=0.7,
                 response_mime_type="application/json",
                 response_schema=RESUME_RESPONSE_SCHEMA,
             ),

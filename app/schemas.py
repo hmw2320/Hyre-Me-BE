@@ -241,3 +241,4 @@ class PortfolioSaveResponse(BaseModel):
 class GenerateResumeRequest(BaseModel):
     company_id: int
     additional_prompt: Optional[str] = None
+    language: Optional[str] = "한국어"
