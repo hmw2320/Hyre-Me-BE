@@ -777,7 +777,7 @@ def generate_resume(payload: schemas.GenerateResumeRequest, db: Session = Depend
         title=ai_result.get("title", f"{company.name} 지원 자기소개서"),
         content_markdown=final_markdown,
         additional_prompt=payload.additional_prompt,
-        status="COMPLETED"
+        status=ai_result.get("status", "COMPLETED")
     )
     
     db.add(new_resume)
