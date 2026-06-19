@@ -190,7 +190,7 @@ RESUME_RESPONSE_SCHEMA = types.Schema(
     type=types.Type.OBJECT,
     required=["title", "content_markdown", "reasoning", "enhanced_keywords", "interview_questions"],
     properties={
-        "title": types.Schema(type=types.Type.STRING, description="자기소개서의 전문적이고 매력적인 제목"),
+        "title": types.Schema(type=types.Type.STRING, description="자기소개서의 간략한 제목 (15자를 넘기지 않게, 회사명 반드시 포함)"),
         "content_markdown": types.Schema(type=types.Type.STRING, description="마크다운 형식으로 작성된 자기소개서 본문"),
         "reasoning": types.Schema(type=types.Type.STRING, description="사용자의 TMI와 스펙을 바탕으로 왜 이렇게 자소서를 작성했는지에 대한 설명"),
         "enhanced_keywords": types.Schema(

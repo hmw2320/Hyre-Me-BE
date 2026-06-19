@@ -102,7 +102,6 @@ class Company(Base):
     name = Column(String(255), nullable=False)
     role = Column(String(255), nullable=False)
     deadline_text = Column(String(100), nullable=True)
-    status = Column(String(50), nullable=True, default="PREPARING")
     job_posting_url = Column(String(500), nullable=True)
     requirements = Column(Text, nullable=True)
     preferences = Column(Text, nullable=True)

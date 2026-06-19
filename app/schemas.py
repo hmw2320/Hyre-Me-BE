@@ -162,7 +162,6 @@ class CompanyBase(BaseModel):
     name: str
     role: str
     deadline_text: Optional[str] = None
-    status: Optional[str] = "PREPARING"
     job_posting_url: Optional[str] = None
     requirements: Optional[str] = None
     preferences: Optional[str] = None
@@ -177,7 +176,6 @@ class CompanyUpdate(BaseModel):
     name: Optional[str] = None
     role: Optional[str] = None
     deadline_text: Optional[str] = None
-    status: Optional[str] = None
     job_posting_url: Optional[str] = None
     requirements: Optional[str] = None
     preferences: Optional[str] = None
@@ -198,7 +196,6 @@ class ResumeCompanyOption(BaseModel):
     id: int
     name: str
     role: str
-    status: Optional[str] = None
     deadline_text: Optional[str] = None
 
     class Config:
